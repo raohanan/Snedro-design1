@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Snedro - Email Infrastructure for Developers</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00aaff",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0a",
+                        "surface": "#111111",
+                        "surface-border": "#333333",
+                        "muted": "#999999",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(200%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        glow: {
+                            '0%, 100%': { opacity: 0.5 },
+                            '50%': { opacity: 0.8 }
+                        },
+                        'float-slow': {
+                            '0%, 100%': { transform: 'translateY(0) rotateX(6deg)' },
+                            '50%': { transform: 'translateY(-15px) rotateX(6deg)' }
+                        }
+                    },
+                    animation: {
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-slow': 'float-slow 8s ease-in-out infinite',
+                        'glow': 'glow 4s ease-in-out infinite',
+                    }
+                },
+            },
+        }
+    </script>
+<style>.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px
+    }
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #111
+    }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px
+    }
+.perspective-1000 {
+    perspective: 1000px;
+}
+.transform-style-3d {
+    transform-style: preserve-3d;
+}
+</style>
+</head>
+<body class="bg-[#050505] text-white font-display antialiased overflow-x-hidden selection:bg-[#00aaff] selection:text-white">
+<div class="relative z-10 flex flex-col min-h-screen">
+<nav class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#050505]/80 backdrop-blur-md">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 relative flex items-center justify-center">
+<div class="absolute inset-0 border border-white rounded-md rotate-45"></div>
+<div class="w-2 h-2 bg-white rounded-full"></div>
+</div>
+<span class="font-bold text-lg tracking-tight ml-1">Snedro</span>
+</div>
+<div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+<a class="hover:text-white transition-colors" href="#">Features</a>
+<a class="hover:text-white transition-colors" href="#">Company</a>
+<a class="hover:text-white transition-colors" href="#">Resources</a>
+<a class="hover:text-white transition-colors" href="#">Help</a>
+<a class="hover:text-white transition-colors" href="#">Docs</a>
+<a class="text-white bg-white/5 px-3 py-1 rounded-full border border-white/10 hover:bg-white/10 transition-colors" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-6">
+<a class="text-sm font-medium text-gray-300 hover:text-white transition-colors hidden sm:block" href="#">Log In</a>
+<a class="bg-white text-black text-sm font-semibold px-4 py-2 rounded-full hover:bg-gray-200 transition-colors" href="#">
+                Get Started
+            </a>
+</div>
+</div>
+</nav>
+<section class="relative pt-24 pb-0 lg:pt-36 lg:pb-12 px-6 overflow-hidden bg-[#050505]">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[500px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="max-w-5xl mx-auto flex flex-col items-center text-center relative z-20">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm shadow-[0_0_10px_rgba(255,255,255,0.05)]">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-xs font-mono font-medium text-gray-300 tracking-wide">SYSTEM OPERATIONAL</span>
+</div>
+<h1 class="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-[-0.02em] leading-[0.95] text-white mb-6 drop-shadow-2xl">
+            Email for developers
+        </h1>
+<p class="text-lg sm:text-xl text-[#888] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
+            Deliver transactional and marketing emails at scale.
+        </p>
+<div class="flex flex-wrap justify-center gap-4 mb-24">
+<button class="h-12 px-8 rounded-full bg-white text-black font-semibold text-sm hover:bg-gray-200 hover:scale-105 transition-all duration-200 flex items-center justify-center min-w-[160px] shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                Get Started
+            </button>
+<button class="h-12 px-8 rounded-full bg-transparent border border-[#333] text-white font-medium text-sm hover:bg-white/5 hover:border-white/30 transition-colors flex items-center justify-center gap-2 group">
+<span>Documentation</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="relative w-full max-w-5xl mx-auto h-[400px] sm:h-[500px] perspective-1000 z-10 pointer-events-none">
+<div class="relative w-full h-full transform-style-3d animate-float-slow">
+<div class="absolute top-1/2 left-0 w-1/3 h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent blur-[1px] -rotate-12 translate-y-[-100px] opacity-40"></div>
+<div class="absolute top-1/2 right-0 w-1/3 h-[1px] bg-gradient-to-l from-transparent via-purple-500/50 to-transparent blur-[1px] rotate-12 translate-y-[-100px] opacity-40"></div>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[320px] sm:w-[500px] lg:w-[640px] aspect-[1.5/1] rotate-x-6">
+<div class="absolute inset-0 bg-[#0a0a0a] rounded-xl border border-white/5 transform translate-z-[-20px] shadow-2xl"></div>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[92%] h-[110%] bg-[#0f0f0f] rounded-t-lg border border-white/10 shadow-2xl transform -translate-y-[35%] translate-z-0 flex flex-col p-6 gap-4 overflow-hidden">
+<div class="flex gap-2 opacity-50">
+<div class="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+</div>
+<div class="space-y-3 opacity-40">
+<div class="h-2 bg-white/20 rounded w-2/3"></div>
+<div class="h-2 bg-white/10 rounded w-full"></div>
+<div class="h-2 bg-white/10 rounded w-full"></div>
+<div class="h-2 bg-white/10 rounded w-4/5"></div>
+</div>
+<div class="absolute bottom-0 right-0 w-32 h-32 bg-blue-500/20 blur-[50px] rounded-full"></div>
+</div>
+<div class="absolute inset-0 z-20 rounded-b-xl overflow-hidden backdrop-blur-md bg-white/[0.03] border border-white/10 shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)] transform translate-z-[20px]">
+<div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDIiLz4KPC9zdmc+')] opacity-50"></div>
+<div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent" style="clip-path: polygon(0 0, 50% 50%, 0 100%);"></div>
+<div class="absolute inset-0 border-r border-white/5 opacity-30" style="clip-path: polygon(0 0, 50% 50%, 0 100%);"></div>
+<div class="absolute inset-0 bg-gradient-to-tl from-white/5 to-transparent" style="clip-path: polygon(100% 0, 50% 50%, 100% 100%);"></div>
+<div class="absolute inset-0 border-l border-white/5 opacity-30" style="clip-path: polygon(100% 0, 50% 50%, 100% 100%);"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-50" style="clip-path: polygon(0 100%, 50% 50%, 100% 100%);"></div>
+<div class="absolute bottom-0 left-0 right-0 h-[1px] bg-white/10"></div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#050505] to-transparent z-30"></div>
+</div>
+</section>
+<section class="py-10 bg-[#050505]">
+<div class="max-w-7xl mx-auto px-6">
+<p class="text-center text-sm font-medium text-gray-500 mb-8 uppercase tracking-widest">Trusted by engineering teams at</p>
+<div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+<div class="h-8 flex items-center gap-2">
+<div class="w-6 h-6 bg-white rounded-md"></div>
+<span class="font-bold text-xl text-white">ACME</span>
+</div>
+<div class="h-8 flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border-2 border-white"></div>
+<span class="font-bold text-xl text-white">Globex</span>
+</div>
+<div class="h-8 flex items-center gap-2">
+<div class="w-6 h-6 bg-white rotate-45"></div>
+<span class="font-bold text-xl text-white">Soylent</span>
+</div>
+<div class="h-8 flex items-center gap-2">
+<div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[20px] border-b-white"></div>
+<span class="font-bold text-xl text-white">Umbrella</span>
+</div>
+<div class="h-8 flex items-center gap-2">
+<div class="w-6 h-6 border border-white flex items-center justify-center"><div class="w-2 h-2 bg-white"></div></div>
+<span class="font-bold text-xl text-white">Initech</span>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 bg-[#050505] relative">
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">Build with your stack</h2>
+<p class="text-muted text-lg max-w-2xl mx-auto">
+                First-class support for the languages and frameworks you love. Get started with just a few lines of code.
+            </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8 items-center justify-items-center">
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<svg class="w-12 h-12 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2l-9 5v10l9 5 9-5V7z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path>
+<circle cx="12" cy="12" fill="currentColor" r="3"></circle>
+</svg>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">Node.js</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<svg class="w-12 h-12 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" fill="currentColor" fill-opacity="0.2"></path>
+<path d="M10 8h4c1.1 0 2 .9 2 2v1h-2v-1h-2v4h4v2h-4c-1.1 0-2-.9-2-2v-1h2v1h2v-4h-4V8z" fill="currentColor"></path>
+</svg>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">Python</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<svg class="w-12 h-12 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 22l-9-11 5-9h8l5 9-9 11z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path>
+<path d="M7.5 7h9" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+</svg>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">Ruby</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<svg class="w-12 h-12 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<rect fill="none" height="12" rx="3" stroke="currentColor" stroke-width="1.5" width="20" x="2" y="6"></rect>
+<text fill="currentColor" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle" x="12" y="16">GO</text>
+</svg>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">Go</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<svg class="w-12 h-12 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" fill="none" r="8" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1.5"></circle>
+<path d="M12 7v10M7 12h10" stroke="currentColor" stroke-width="1.5"></path>
+<rect fill="currentColor" height="4" width="4" x="10" y="10"></rect>
+</svg>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">Rust</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<svg class="w-12 h-12 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 12c0-5-4-9-9-9s-9 4-9 9 4 9 9 9 9-4 9-9z" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+<text fill="currentColor" font-family="sans-serif" font-size="7" font-weight="bold" text-anchor="middle" x="12" y="15">.NET</text>
+</svg>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">.NET</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/10">
+<span class="material-symbols-outlined text-2xl">api</span>
+</div>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">REST</span>
+</div>
+<div class="group flex flex-col items-center gap-3 transition-opacity duration-300 opacity-60 hover:opacity-100 cursor-default">
+<div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/10">
+<span class="material-symbols-outlined text-2xl">mail</span>
+</div>
+<span class="text-xs font-mono font-medium text-gray-500 group-hover:text-white">SMTP</span>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 bg-[#050505]">
+<div class="max-w-7xl mx-auto">
+<div class="mb-16">
+<h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">Core Features</h2>
+<p class="text-muted text-lg max-w-2xl">
+                Everything you need to build, test, and send emails at scale.
+            </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]">
+<div class="group relative bg-[#111111] border border-[#333333] rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-gray-600 transition-colors duration-300">
+<div class="w-12 h-12 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined">science</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-xl font-bold text-white mb-2">Test Mode</h3>
+<p class="text-muted text-sm leading-relaxed">Simulate events and emails without sending to real users.</p>
+</div>
+<div class="absolute -bottom-4 -right-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">shield</span>
+</div>
+</div>
+<div class="md:col-span-2 group relative bg-[#111111] border border-[#333333] rounded-2xl p-8 overflow-hidden hover:border-gray-600 transition-colors duration-300 flex flex-col">
+<div class="relative z-10 mb-8">
+<h3 class="text-xl font-bold text-white mb-2">Webhooks</h3>
+<p class="text-muted text-sm max-w-sm">Real-time notifications for every email event, delivered instantly to your endpoint.</p>
+</div>
+<div class="absolute inset-0 flex items-center justify-end px-12 pt-12">
+<div class="flex items-center gap-6 translate-y-8 group-hover:translate-y-6 transition-transform duration-500">
+<div class="w-20 h-20 bg-[#0a0a0a] border border-[#333] rounded-xl flex flex-col items-center justify-center shadow-2xl z-10">
+<span class="material-symbols-outlined text-gray-400 mb-2">dns</span>
+<span class="text-[10px] text-gray-500 font-mono uppercase">Snedro</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-24 relative">
+<div class="w-full h-[2px] bg-[#333] relative overflow-hidden">
+<div class="absolute inset-0 bg-blue-500/50 w-1/2 -translate-x-full animate-[shimmer_2s_infinite]"></div>
+</div>
+<div class="px-2 py-1 bg-[#1a1a1a] border border-[#333] rounded text-[10px] font-mono text-blue-400 absolute -top-8 animate-pulse">POST /hook</div>
+</div>
+<div class="w-48 bg-[#0a0a0a] border border-[#333] rounded-xl p-4 shadow-2xl relative z-10 transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
+<div class="space-y-1.5 font-mono text-[10px]">
+<div class="flex"><span class="text-purple-400">"type"</span>: <span class="text-green-400">"bounce"</span></div>
+<div class="flex"><span class="text-purple-400">"email"</span>: <span class="text-blue-400">"user@co"</span></div>
+<div class="flex"><span class="text-purple-400">"ts"</span>: <span class="text-yellow-400">16942...</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="group relative bg-[#111111] border border-[#333333] rounded-2xl p-0 overflow-hidden hover:border-gray-600 transition-colors duration-300 flex flex-col">
+<div class="p-8 pb-4 relative z-10 bg-[#111111]">
+<h3 class="text-xl font-bold text-white mb-2">Visual Editor</h3>
+<p class="text-muted text-sm">Delightful clean visual interface.</p>
+</div>
+<div class="flex-1 bg-[#1a1a1a] border-t border-[#333] relative mt-4 overflow-hidden">
+<div class="absolute inset-x-4 top-4 bottom-0 bg-white rounded-t-lg shadow-xl origin-bottom transition-transform duration-300 group-hover:scale-[1.02] flex flex-col">
+<div class="h-8 border-b border-gray-100 flex items-center px-3 gap-1.5 bg-gray-50 rounded-t-lg">
+<div class="w-2 h-2 rounded-full bg-red-300"></div>
+<div class="w-2 h-2 rounded-full bg-yellow-300"></div>
+<div class="w-2 h-2 rounded-full bg-green-300"></div>
+</div>
+<div class="p-4 space-y-3 bg-white">
+<div class="h-24 bg-blue-50/50 border-2 border-dashed border-blue-100 rounded-lg flex items-center justify-center">
+<span class="text-blue-200 text-xs font-medium">Drag Image Here</span>
+</div>
+<div class="space-y-1.5">
+<div class="h-2 bg-gray-100 rounded w-full"></div>
+<div class="h-2 bg-gray-100 rounded w-5/6"></div>
+<div class="h-2 bg-gray-100 rounded w-4/6"></div>
+</div>
+<div class="w-24 h-8 bg-black rounded text-white text-[10px] font-bold flex items-center justify-center mx-auto mt-2">Button</div>
+</div>
+</div>
+</div>
+</div>
+<div class="group relative bg-[#111111] border border-[#333333] rounded-2xl p-8 flex flex-col justify-between overflow-hidden hover:border-gray-600 transition-colors duration-300">
+<div class="relative z-10">
+<h3 class="text-xl font-bold text-white mb-2">Analytics</h3>
+<p class="text-muted text-sm">Track engagement.</p>
+</div>
+<div class="absolute bottom-0 left-0 right-0 h-32 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 40">
+<path d="M0 40 L10 35 L20 38 L30 25 L40 28 L50 15 L60 20 L70 10 L80 15 L90 5 L100 8" fill="none" stroke="#22c55e" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<path d="M0 40 L10 35 L20 38 L30 25 L40 28 L50 15 L60 20 L70 10 L80 15 L90 5 L100 8 V 40 H 0 Z" fill="url(#gradient-chart-2)" opacity="0.2"></path>
+<defs>
+<linearGradient id="gradient-chart-2" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#22c55e"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</linearGradient>
+</defs>
+</svg>
+</div>
+<div class="absolute bottom-6 right-6 flex items-center gap-1 text-green-500 bg-green-500/10 px-2 py-1 rounded text-xs font-mono font-medium border border-green-500/20">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+12.5%</span>
+</div>
+</div>
+<div class="group relative bg-[#111111] border border-[#333333] rounded-2xl p-8 flex flex-col overflow-hidden hover:border-gray-600 transition-colors duration-300">
+<div class="flex items-center justify-between mb-4 z-10">
+<h3 class="text-xl font-bold text-white">React</h3>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-[#00aaff]/10 text-[#00aaff] border border-[#00aaff]/20 font-mono">.tsx</span>
+</div>
+<div class="bg-[#080808] rounded-lg p-4 border border-[#333] font-mono text-[11px] leading-relaxed overflow-hidden h-full group-hover:border-gray-600 transition-colors">
+<pre class="text-gray-400"><span class="text-purple-400">import</span> { <span class="text-yellow-300">Button</span> } <span class="text-purple-400">from</span> <span class="text-green-400">'@snedro/ui'</span>;
+<span class="text-purple-400">export const</span> <span class="text-blue-400">Email</span> = () =&gt; (
+  <span class="text-blue-400">&lt;Html&gt;</span>
+    <span class="text-blue-400">&lt;Button</span>
+      href=<span class="text-green-400">"https://..."</span>
+      className=<span class="text-green-400">"bg-black"</span>
+    <span class="text-blue-400">&gt;</span>
+      Get Started
+    <span class="text-blue-400">&lt;/Button&gt;</span>
+  <span class="text-blue-400">&lt;/Html&gt;</span>
+);
+</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 bg-[#050505]">
+<div class="max-w-7xl mx-auto">
+<div class="text-left mb-16">
+<h2 class="text-3xl md:text-4xl font-bold mb-4">Infrastructure you can trust</h2>
+<p class="text-muted text-lg max-w-2xl">We handle the complexity of email deliverability so you can focus on building your product.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="group p-8 rounded-lg bg-[#111111] border border-[#333333] hover:border-gray-600 transition-colors duration-300 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[100px] text-white">verified_user</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 text-blue-400">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<h3 class="text-xl font-semibold mb-3 text-white">99.9% Deliverability</h3>
+<p class="text-muted leading-relaxed">Ensure your emails reach the inbox. Our AI-driven engine optimizes delivery paths in real-time to avoid spam folders.</p>
+</div>
+<div class="group p-8 rounded-lg bg-[#111111] border border-[#333333] hover:border-gray-600 transition-colors duration-300 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[100px] text-white">insights</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-6 text-purple-400">
+<span class="material-symbols-outlined">insights</span>
+</div>
+<h3 class="text-xl font-semibold mb-3 text-white">Real-time Analytics</h3>
+<p class="text-muted leading-relaxed">Track opens, clicks, and bounces as they happen. Gain granular insights into user engagement with zero latency.</p>
+</div>
+<div class="group p-8 rounded-lg bg-[#111111] border border-[#333333] hover:border-gray-600 transition-colors duration-300 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[100px] text-white">public</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-green-500/10 flex items-center justify-center mb-6 text-green-400">
+<span class="material-symbols-outlined">public</span>
+</div>
+<h3 class="text-xl font-semibold mb-3 text-white">Global Infrastructure</h3>
+<p class="text-muted leading-relaxed">Distributed servers across 12 regions ensure low latency and high availability, no matter where your users are located.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 bg-[#050505]">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<h2 class="text-3xl md:text-4xl font-bold mb-4">Developer Experience First</h2>
+<p class="text-muted text-lg max-w-xl">We obsess over the details so you have the best possible integration experience.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-surface border border-surface-border text-xs font-mono text-gray-400">Typescript Ready</span>
+<span class="px-3 py-1 rounded-full bg-surface border border-surface-border text-xs font-mono text-gray-400">REST API</span>
+</div>
+</div>
+<div class="grid lg:grid-cols-2 gap-8">
+<div class="bg-[#111111] border border-[#333333] rounded-xl p-1 overflow-hidden flex flex-col">
+<div class="p-6 md:p-8 pb-4">
+<h3 class="text-xl font-bold mb-2">Instant Webhooks</h3>
+<p class="text-muted text-sm">Receive real-time events for everything that happens to your emails.</p>
+</div>
+<div class="mt-auto bg-[#0a0a0a] border-t border-surface-border p-4 font-mono text-xs md:text-sm text-gray-400 overflow-x-auto">
+<div class="flex gap-2 mb-2 text-gray-500">
+<span class="material-symbols-outlined text-sm">bolt</span>
+<span>POST /webhooks/email-event</span>
+</div>
+<pre class="text-gray-300">{
+  <span class="text-blue-400">"type"</span>: <span class="text-green-400">"email.delivered"</span>,
+  <span class="text-blue-400">"created_at"</span>: <span class="text-green-400">"2023-11-01T12:00:00Z"</span>,
+  <span class="text-blue-400">"data"</span>: {
+    <span class="text-blue-400">"id"</span>: <span class="text-green-400">"re_123456789"</span>,
+    <span class="text-blue-400">"recipient"</span>: <span class="text-green-400">"user@example.com"</span>,
+    <span class="text-blue-400">"status"</span>: <span class="text-green-400">"sent"</span>
+  }
+}</pre>
+</div>
+</div>
+<div class="bg-[#111111] border border-[#333333] rounded-xl p-1 overflow-hidden flex flex-col">
+<div class="p-6 md:p-8 pb-4">
+<h3 class="text-xl font-bold mb-2">Granular Logs</h3>
+<p class="text-muted text-sm">Debug with confidence using our detailed request and response logs.</p>
+</div>
+<div class="mt-auto bg-[#0a0a0a] border-t border-surface-border p-0 flex flex-col">
+<div class="flex items-center gap-3 p-3 border-b border-white/5 text-xs font-mono hover:bg-white/5 cursor-pointer transition-colors">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-gray-400">200 OK</span>
+<span class="text-gray-500 flex-1">POST /emails</span>
+<span class="text-gray-600">45ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 border-b border-white/5 text-xs font-mono hover:bg-white/5 cursor-pointer transition-colors">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-gray-400">200 OK</span>
+<span class="text-gray-500 flex-1">GET /domains</span>
+<span class="text-gray-600">120ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 border-b border-white/5 text-xs font-mono hover:bg-white/5 cursor-pointer transition-colors">
+<div class="w-2 h-2 rounded-full bg-red-500"></div>
+<span class="text-gray-400">401 Unauth</span>
+<span class="text-gray-500 flex-1">POST /emails/batch</span>
+<span class="text-gray-600">12ms</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-xs font-mono hover:bg-white/5 cursor-pointer transition-colors">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-gray-400">200 OK</span>
+<span class="text-gray-500 flex-1">GET /analytics</span>
+<span class="text-gray-600">89ms</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 bg-[#050505]">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-white">Choose your plan</h2>
+<div class="max-w-xl mx-auto mb-12 relative px-4">
+<div class="flex justify-between text-xs font-mono text-gray-500 mb-4 uppercase tracking-wider">
+<span>3k</span>
+<span>50k</span>
+<span>100k</span>
+<span>500k</span>
+<span>1M</span>
+<span>3M+</span>
+</div>
+<div class="relative h-2 bg-[#1a1a1a] rounded-full">
+<div class="absolute top-0 left-0 h-full bg-white/20 rounded-l-full w-[20%]"></div>
+<div class="absolute top-1/2 left-[20%] -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.4)] cursor-pointer hover:scale-110 transition-transform"></div>
+</div>
+<p class="text-center mt-6 text-sm text-gray-400">
+                    Estimate your volume to find the right plan
+                </p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-[#0F0F0F] border border-[#333333] rounded-2xl p-6 flex flex-col h-full hover:border-gray-600 transition-colors">
+<div class="mb-4">
+<p class="text-sm font-medium text-gray-400 mb-2">3,000 emails / month</p>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-bold text-white">Free</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 mb-6">Perfect for side projects and hobbyists.</p>
+<button class="w-full py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] text-white font-medium text-sm hover:bg-[#252525] hover:border-gray-500 transition-all mb-8">
+                    Start for free
+                </button>
+<ul class="space-y-3 mt-auto">
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>100/day limit</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>3 days log retention</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Community support</span>
+</li>
+</ul>
+</div>
+<div class="bg-[#0F0F0F] border border-[#333333] rounded-2xl p-6 flex flex-col h-full hover:border-gray-600 transition-colors relative">
+<div class="mb-4">
+<p class="text-sm font-medium text-gray-400 mb-2">50,000 emails / month</p>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-bold text-white">$20</span>
+<span class="text-gray-500">/ mo</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 mb-6">For growing startups and apps.</p>
+<button class="w-full py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-gray-200 transition-all mb-8 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                    Get Started
+                </button>
+<ul class="space-y-3 mt-auto">
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Unlimited daily sending</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>15 days log retention</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Inbound parsing</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>1 Dedicated IP</span>
+</li>
+</ul>
+</div>
+<div class="bg-[#0F0F0F] border border-[#333333] rounded-2xl p-6 flex flex-col h-full hover:border-gray-600 transition-colors">
+<div class="mb-4">
+<p class="text-sm font-medium text-gray-400 mb-2">100,000 emails / month</p>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-bold text-white">$90</span>
+<span class="text-gray-500">/ mo</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 mb-6">Scale with confidence.</p>
+<button class="w-full py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-gray-200 transition-all mb-8 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                    Get Started
+                </button>
+<ul class="space-y-3 mt-auto">
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>30 days log retention</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Priority Support</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Subaccount management</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>SSO / SAML</span>
+</li>
+</ul>
+</div>
+<div class="bg-[#0F0F0F] border border-[#333333] rounded-2xl p-6 flex flex-col h-full hover:border-gray-600 transition-colors">
+<div class="mb-4">
+<p class="text-sm font-medium text-gray-400 mb-2">Enterprise</p>
+<div class="flex items-baseline gap-1">
+<span class="text-3xl font-bold text-white">Custom</span>
+</div>
+</div>
+<p class="text-sm text-gray-500 mb-6">High volume and custom requirements.</p>
+<button class="w-full py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-gray-200 transition-all mb-8 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                    Contact Us
+                </button>
+<ul class="space-y-3 mt-auto">
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Unlimited log retention</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Dedicated Success Manager</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>99.99% SLA</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-white text-lg">check</span>
+<span>Custom Contracts</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 bg-[#050505] relative overflow-hidden">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
+<div class="flex flex-col gap-10 lg:pt-8">
+<div>
+<h2 class="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white">Contact our team</h2>
+<p class="text-muted text-lg max-w-md leading-relaxed">
+                    Have questions about our API, enterprise features, or custom integrations? We’re here to help you build.
+                </p>
+</div>
+<div class="space-y-8">
+<div class="flex gap-5 group">
+<div class="w-12 h-12 rounded-xl bg-[#111] border border-[#333] flex items-center justify-center shrink-0 group-hover:border-white/30 transition-colors">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">mail</span>
+</div>
+<div>
+<h3 class="text-white font-medium mb-1">Email Support</h3>
+<a class="text-muted hover:text-white transition-colors font-mono text-sm" href="mailto:support@snedro.com">support@snedro.com</a>
+</div>
+</div>
+<div class="flex gap-5 group">
+<div class="w-12 h-12 rounded-xl bg-[#111] border border-[#333] flex items-center justify-center shrink-0 group-hover:border-white/30 transition-colors">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">menu_book</span>
+</div>
+<div>
+<h3 class="text-white font-medium mb-1">Documentation</h3>
+<a class="text-muted hover:text-white transition-colors font-mono text-sm flex items-center gap-2" href="#">
+                            Browse the docs
+                            <span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+</div>
+</div>
+<div class="flex gap-5 group">
+<div class="w-12 h-12 rounded-xl bg-[#111] border border-[#333] flex items-center justify-center shrink-0 group-hover:border-white/30 transition-colors">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">schedule</span>
+</div>
+<div>
+<h3 class="text-white font-medium mb-1">Support Hours</h3>
+<p class="text-muted text-sm mb-1">Mon-Fri, 9am - 5pm EST</p>
+<div class="flex items-center gap-2 text-xs font-mono text-green-400 bg-green-400/10 px-2 py-1 rounded w-fit border border-green-400/20">
+<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                            Response time: &lt; 2 hrs
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-full">
+<div class="bg-[#0F0F0F] border border-[#333] rounded-2xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+<div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+<form class="space-y-6">
+<div class="grid md:grid-cols-2 gap-6">
+<div class="relative group">
+<input class="peer block w-full appearance-none rounded-lg border border-[#333] bg-[#0A0A0A] px-4 pt-6 pb-2 text-white focus:border-white focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.1)] outline-none transition-all duration-200 placeholder-transparent" id="name" placeholder=" " type="text"/>
+<label class="absolute left-4 top-4 text-gray-500 text-xs font-mono transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-gray-400 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px]" for="name">FULL NAME</label>
+</div>
+<div class="relative group">
+<input class="peer block w-full appearance-none rounded-lg border border-[#333] bg-[#0A0A0A] px-4 pt-6 pb-2 text-white focus:border-white focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.1)] outline-none transition-all duration-200 placeholder-transparent" id="email" placeholder=" " type="email"/>
+<label class="absolute left-4 top-4 text-gray-500 text-xs font-mono transition-all duration-200 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-gray-400 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px]" for="email">WORK EMAIL</label>
+</div>
+</div>
+<div class="relative group">
+<select class="peer block w-full appearance-none rounded-lg border border-[#333] bg-[#0A0A0A] px-4 pt-6 pb-2 text-white focus:border-white focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.1)] outline-none transition-all duration-200" id="subject">
+<option disabled="" selected="" value=""></option>
+<option>Sales Inquiry</option>
+<option>Technical Support</option>
+<option>Enterprise License</option>
+<option>Other</option>
+</select>
+<label class="absolute left-4 top-1.5 text-[10px] text-gray-400 font-mono pointer-events-none" for="subject">
+                             SUBJECT
+                        </label>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+<span class="material-symbols-outlined text-sm">unfold_more</span>
+</div>
+</div>
+<div class="relative group">
+<textarea class="peer block w-full appearance-none rounded-lg border border-[#333] bg-[#0A0A0A] px-4 pt-6 pb-2 text-white focus:border-white focus:ring-0 focus:shadow-[0_0_15px_rgba(255,255,255,0.1)] outline-none transition-all duration-200 resize-none placeholder-transparent" id="message" placeholder=" " rows="4"></textarea>
+<label class="absolute left-4 top-4 text-gray-500 text-xs font-mono transition-all duration-200 peer-placeholder-shown:top-6 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-gray-400 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px]" for="message">MESSAGE</label>
+</div>
+<button class="w-full bg-white text-black font-bold h-12 rounded-lg hover:scale-[1.02] hover:brightness-110 active:scale-[0.98] transition-all duration-200 mt-4 shadow-[0_0_20px_rgba(255,255,255,0.1)] flex items-center justify-center gap-2" type="button">
+                        Send Message
+                    </button>
+</form>
+</div>
+</div>
+</div>
+</section>
+<section class="py-24 px-6 relative overflow-hidden bg-[#050505]">
+<div class="max-w-4xl mx-auto text-center relative z-10">
+<h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-white drop-shadow-sm">Ready to build?</h2>
+<p class="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">Join thousands of developers building the future of communication.</p>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="h-14 px-8 rounded-full bg-white text-black font-semibold text-base hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                        Get Started
+                    </button>
+<button class="h-14 px-8 rounded-full bg-[#111111] border border-white/10 text-white font-medium text-base hover:bg-white/5 hover:border-white/20 transition-all shadow-lg backdrop-blur-sm">
+                        Contact Sales
+                    </button>
+</div>
+</div>
+</section>
+<footer class="bg-[#050505] border-t border-white/5 pt-16 pb-8 px-6 text-sm">
+<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
+<div class="col-span-2 lg:col-span-2 flex flex-col items-start gap-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 relative flex items-center justify-center">
+<div class="absolute inset-0 border border-white rounded-md rotate-45"></div>
+<div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+</div>
+<span class="font-bold text-xl tracking-tight text-white">Snedro</span>
+</div>
+<p class="text-[#888888] text-base leading-relaxed max-w-xs">
+                    Developer-first email API. Build, test, and deliver transactional emails at scale.
+                </p>
+<div class="flex items-center gap-4">
+<a class="text-[#888888] hover:text-white transition-colors" href="#">
+<span class="sr-only">Twitter</span>
+<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+</a>
+<a class="text-[#888888] hover:text-white transition-colors" href="#">
+<span class="sr-only">GitHub</span>
+<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path></svg>
+</a>
+</div>
+</div>
+<div class="col-span-1 flex flex-col gap-4">
+<h4 class="font-semibold text-white">Product</h4>
+<ul class="flex flex-col gap-3 text-[#888888]">
+<li><a class="hover:text-white transition-colors" href="#">Email API</a></li>
+<li><a class="hover:text-white transition-colors" href="#">SMTP</a></li>
+<li><a class="hover:text-white transition-colors" href="#">SDKs</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Pricing</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Changelog</a></li>
+</ul>
+</div>
+<div class="col-span-1 flex flex-col gap-4">
+<h4 class="font-semibold text-white">Resources</h4>
+<ul class="flex flex-col gap-3 text-[#888888]">
+<li><a class="hover:text-white transition-colors" href="#">Documentation</a></li>
+<li><a class="hover:text-white transition-colors" href="#">API Reference</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Guides</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Status Page</a></li>
+</ul>
+</div>
+<div class="col-span-1 flex flex-col gap-4">
+<h4 class="font-semibold text-white">Company</h4>
+<ul class="flex flex-col gap-3 text-[#888888]">
+<li><a class="hover:text-white transition-colors" href="#">About</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Blog</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div class="col-span-1 flex flex-col gap-4">
+<h4 class="font-semibold text-white">Legal</h4>
+<ul class="flex flex-col gap-3 text-[#888888]">
+<li><a class="hover:text-white transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-white transition-colors" href="#">DPA</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Security</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-[#888888] text-xs">© 2024 Snedro Inc. All rights reserved.</p>
+<div class="flex items-center gap-2">
+<div class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</div>
+<span class="text-[#888888] text-xs font-medium">All Systems Operational</span>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
